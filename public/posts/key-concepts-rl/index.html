@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Key Concepts In (Deep) Reinforcement Learning | The Outlier</title>
+<meta name="keywords" content="">
+<meta name="description" content="Reinforcement Learning (RL) revolves around the interactions between an agent and its environment. The environment represents the world where the agent lives and takes action. At each step, the agent observes some information about the environment, makes decisions, and affects the environment through its actions.
+The agent also receives rewards from the environment, which indicate how well it is doing. The agent&rsquo;s ultimate goal is to maximize the total rewards it receives, called return.">
+<meta name="author" content="">
+<link rel="canonical" href="http://example.org/posts/key-concepts-rl/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.4599eadb9eb2ad3d0a8d6827b41a8fda8f2f4af226b63466c09c5fddbc8706b7.css" integrity="sha256-RZnq256yrT0KjWgntBqP2o8vSvImtjRmwJxf3byHBrc=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://example.org/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://example.org/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://example.org/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://example.org/apple-touch-icon.png">
+<link rel="mask-icon" href="http://example.org/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css" integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ" crossorigin="anonymous">
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.js" integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY" crossorigin="anonymous"></script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"
+    onload="renderMathInElement(document.body);"></script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    renderMathInElement(document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "$", right: "$", display: false}
+        ]
+    });
+});
+</script>
+<meta property="og:title" content="Key Concepts In (Deep) Reinforcement Learning" />
+<meta property="og:description" content="Reinforcement Learning (RL) revolves around the interactions between an agent and its environment. The environment represents the world where the agent lives and takes action. At each step, the agent observes some information about the environment, makes decisions, and affects the environment through its actions.
+The agent also receives rewards from the environment, which indicate how well it is doing. The agent&rsquo;s ultimate goal is to maximize the total rewards it receives, called return." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://example.org/posts/key-concepts-rl/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-03-12T12:55:08+08:00" />
+<meta property="article:modified_time" content="2024-03-12T12:55:08+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Key Concepts In (Deep) Reinforcement Learning"/>
+<meta name="twitter:description" content="Reinforcement Learning (RL) revolves around the interactions between an agent and its environment. The environment represents the world where the agent lives and takes action. At each step, the agent observes some information about the environment, makes decisions, and affects the environment through its actions.
+The agent also receives rewards from the environment, which indicate how well it is doing. The agent&rsquo;s ultimate goal is to maximize the total rewards it receives, called return."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "http://example.org/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Key Concepts In (Deep) Reinforcement Learning",
+      "item": "http://example.org/posts/key-concepts-rl/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Key Concepts In (Deep) Reinforcement Learning",
+  "name": "Key Concepts In (Deep) Reinforcement Learning",
+  "description": "Reinforcement Learning (RL) revolves around the interactions between an agent and its environment. The environment represents the world where the agent lives and takes action. At each step, the agent observes some information about the environment, makes decisions, and affects the environment through its actions.\nThe agent also receives rewards from the environment, which indicate how well it is doing. The agent\u0026rsquo;s ultimate goal is to maximize the total rewards it receives, called return.",
+  "keywords": [
+    
+  ],
+  "articleBody": "Reinforcement Learning (RL) revolves around the interactions between an agent and its environment. The environment represents the world where the agent lives and takes action. At each step, the agent observes some information about the environment, makes decisions, and affects the environment through its actions.\nThe agent also receives rewards from the environment, which indicate how well it is doing. The agent’s ultimate goal is to maximize the total rewards it receives, called return. RL methods are designed to help the agent learn and improve its behaviors to achieve its objectives.\nTo better understand RL, we need to explore some key terms such as states and observations, action spaces, policies, trajectories, different ways of measuring return, the optimization problem in RL, and value functions. By understanding these fundamental concepts, we build a strong foundation to understand how RL methods work and how they can be used to solve many different real-life problems.\nStates and Observations In RL, a state represents a complete description of the world at a given point in time. It contains all the information necessary to understand the current state of the environment, including any hidden information. On the other hand, an observation provides a partial description of the state and may omit certain details. In deep RL, observations are often represented as real-valued vectors, matrices, or higher-order tensors. For example, a visual observation can be represented by an RGB matrix of pixel values, while the state of a robot can be represented by its joint angles and velocities.\nAction Spaces Different environments allow different kinds of actions to be taken by the agent. The set of valid actions is referred to as the action space. In RL, there are two main types of action spaces: discrete and continuous.\nIn discrete action spaces, such as Atari games or the game of chess, only a finite number of moves are available to the agent. The agent selects an action from a predefined set of discrete choices.\nIn continuous action spaces, such as controlling a robot in the physical world, actions are represented as real-valued vectors. This allows for a wide range of precise actions to be taken by the agent.\nPolicies A policy is a rule or strategy used by an agent to decide what actions to take in a given state. In RL, policies can be deterministic or stochastic.\nA deterministic policy selects a single action for a given state:\n$$a_t = \\mu (s_t)$$\nThe action is directly determined by the policy’s output, which can be a computable function based on a set of parameters, such as the weights and biases of a neural network.\nA stochastic policy selects actions probabilistically:\n$$a_t \\sim \\pi( \\cdot \\mid s_t)$$\nThe policy outputs a probability distribution over actions for a given state, and the agent samples an action based on this distribution. Stochastic policies are often used when exploring different actions or dealing with uncertainty.\nIn deep RL, parameterized policies are commonly used, where the outputs are computable functions that depend on a set of parameters. These policies can be represented by neural networks, allowing for flexible and expressive policy representations.\nTrajectories A trajectory, also known as an episode or rollout, is a sequence of states and actions experienced by an agent in the environment. It captures the agent’s interactions with the environment over a specific period. A trajectory can be represented as follows:\n$$\\tau = (s_0, a_0, s_1, a_1, …)$$\nThe very first state of the trajectory, s₀, is randomly sampled from the start-state distribution, denoted as S₀ ~ ρ₀(·). The state transitions in an environment can be either deterministic or stochastic.\nIn deterministic state transitions, the next state, sₜ₊₁, is solely determined by the current state and action:\n$$s_{t+1} = f(s_t, a_t)$$\nIn stochastic state transitions, the next state, sₜ₊₁, is sampled from a transition probability distribution:\n$$s_{t+1} \\sim P(\\cdot|s_t, a_t)$$\nRewards and Return The reward function plays a crucial role in RL. It quantifies the immediate desirability or quality of a particular state-action-state transition. The reward function depends on the current state, the action taken, and the next state:\nThe agent’s goal is to maximize the cumulative reward over a trajectory, denoted as R(τ). There are different types of returns in RL:\nFinite-horizon undiscounted return represents the sum of rewards obtained within a fixed window of steps:\n$$R(\\tau) = \\sum^T_{t=0}r_t$$\nInfinite-horizon discounted return represents the sum of all rewards obtained by the agent, but discounted based on how far they are obtained in the future:\n$$R(\\tau) = \\sum^\\infty_{t=0} \\gamma^tr_t$$\nwhere $\\gamma \\in (0, 1)$\nThe RL Problem The primary objective in RL is to find a policy that maximizes the expected return when the agent acts according to it. Suppose the environment transitions and the policy are stochastic. In that case, the probability of a T-step trajectory can be expressed as:\n$$ P(\\tau | \\pi) = \\rho_0(s_0) \\prod^{T - 1}_{t=0} P(s_{t+1}|s_t, a_t) \\pi (a_t|s_t) $$\nThe expected return, or objective function, can be defined as:\n$$ J(\\pi) = \\int_\\tau P(\\tau | \\pi)R(\\tau) = E_{\\tau \\sim \\pi}[R(\\tau)] $$\nThe central optimization problem in RL is to find the optimal policy, denoted as π*:\n$$ \\pi^*=\\arg \\max_\\pi J(\\pi) $$\nValue Functions Value functions provide estimates of the expected return associated with states or state-action pairs. There are four main types of value functions:\nThe on-policy value function, Vπ(s), estimates the expected return if we start in state s and always act according to policy π:\n$$V^\\pi(s) = E_{\\tau \\sim \\pi} [R(\\tau)|s_0 = s]$$\nThe on-policy action-value function Qπ(s, a) estimates the expected return if we start in state s, take action a, and then forever act according to policy π:\n$$Q^\\pi(s,a) = E_{\\tau \\sim \\pi}[R(\\tau)|s_0=s, a_0=a]$$\nThe optimal value function V*(s) estimates the expected return if we start in state s and always act according to the optimal policy:\n$$V^\\pi(s) = \\max_\\pi E_{\\tau \\sim \\pi} [R(\\tau)|s_0 = s]$$\nThe optimal action-value function Q*(s, a) estimates the expected return if we start in state s, take action a, and then forever act according to the optimal policy:\n$$Q^\\pi(s,a) = \\max_\\pi E_{\\tau \\sim \\pi}[R(\\tau)|s_0=s, a_0=a]$$\nBellman Equations All four value functions above satisfy self-consistency equations known as the Bellman equations. These equations describe the relationship between the value of a state or state-action pair and the value of subsequent states.\nThe Bellman equations for on-policy value functions are:\n$$V^\\pi(s)=E_{a \\sim \\pi, s’ \\sim P}[r(s,a)+ \\gamma V^\\pi(s’)],$$\n$$Q^\\pi(s,a)=E_{s’ \\sim P}[r(s,a)+ \\gamma E_{a’ \\sim \\pi}[Q^\\pi(s’, a’)]$$\nThe Bellman equations for optimal value functions are:\n$$V^*(s)=\\max_a E_{s’ \\sim P} [r(s,a)+\\gamma V^*(s’)],$$\n$$Q^*(s,a)= E_{s’ \\sim P} [r(s,a)+\\gamma \\max_a’ Q^*(s’, a’)]$$\nThe crucial difference between the Bellman equations for on-policy value functions and optimal value functions is the absence or presence of the maximization over actions. The inclusion of this maximization reflects the fact that the agent must select the action that leads to the highest value in order to act optimally.\nAdvantage Functions In RL, there are situations where we are interested in understanding not just how good an action is in absolute terms but how much better it is compared to other available actions on average. The advantage function captures the relative advantage of taking a specified action in a state compared to randomly selecting an action. It can be defined as:\n$$A^\\pi(s,a)=Q^\\pi(s,a)-V^\\pi(s)$$\nThe advantage function provides insights into the superiority of a specific action in a given state, considering the current policy’s performance.\nReference: [1] OpenAI Spinning Up. https://spinningup.openai.com/en/latest/spinningup/rl_intro.html\n",
+  "wordCount" : "1236",
+  "inLanguage": "en",
+  "datePublished": "2024-03-12T12:55:08+08:00",
+  "dateModified": "2024-03-12T12:55:08+08:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://example.org/posts/key-concepts-rl/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "The Outlier",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://example.org/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class=" dark" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://example.org/" accesskey="h" title="The Outlier (Alt + H)">The Outlier</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://example.org/" title="Home">
+                    <span>Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://example.org/posts/" title="Blog">
+                    <span>Blog</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Key Concepts In (Deep) Reinforcement Learning
+    </h1>
+    <div class="post-meta"><span title='2024-03-12 12:55:08 +0800 +08'>March 12, 2024</span>&nbsp;·&nbsp;6 min
+
+</div>
+  </header> 
+  <div class="post-content"><p>Reinforcement Learning (RL) revolves around the interactions between an agent and its environment. The environment represents the world where the agent lives and takes action. At each step, the agent observes some information about the environment, makes decisions, and affects the environment through its actions.</p>
+<p>The agent also receives rewards from the environment, which indicate how well it is doing. The agent&rsquo;s ultimate goal is to maximize the total rewards it receives, called return. RL methods are designed to help the agent learn and improve its behaviors to achieve its objectives.</p>
+<p>To better understand RL, we need to explore some key terms such as states and observations, action spaces, policies, trajectories, different ways of measuring return, the optimization problem in RL, and value functions. By understanding these fundamental concepts, we build a strong foundation to understand how RL methods work and how they can be used to solve many different real-life problems.</p>
+<h2 id="states-and-observations">States and Observations<a hidden class="anchor" aria-hidden="true" href="#states-and-observations">#</a></h2>
+<p>In RL, a <strong>state</strong> represents a complete description of the world at a given point in time. It contains all the information necessary to understand the current state of the environment, including any hidden information. On the other hand, an <strong>observation</strong> provides a partial description of the state and may omit certain details. In deep RL, observations are often represented as real-valued vectors, matrices, or higher-order tensors. For example, a visual observation can be represented by an RGB matrix of pixel values, while the state of a robot can be represented by its joint angles and velocities.</p>
+<h2 id="action-spaces">Action Spaces<a hidden class="anchor" aria-hidden="true" href="#action-spaces">#</a></h2>
+<p>Different environments allow different kinds of actions to be taken by the agent. The set of valid actions is referred to as the <strong>action space</strong>. In RL, there are two main types of action spaces: discrete and continuous.</p>
+<p>In <strong>discrete action spaces</strong>, such as Atari games or the game of chess, only a finite number of moves are available to the agent. The agent selects an action from a predefined set of discrete choices.</p>
+<p>In <strong>continuous action spaces</strong>, such as controlling a robot in the physical world, actions are represented as real-valued vectors. This allows for a wide range of precise actions to be taken by the agent.</p>
+<h2 id="policies">Policies<a hidden class="anchor" aria-hidden="true" href="#policies">#</a></h2>
+<p>A <strong>policy</strong> is a rule or strategy used by an agent to decide what actions to take in a given state. In RL, policies can be deterministic or stochastic.</p>
+<p>A <strong>deterministic policy</strong> selects a single action for a given state:</p>
+<p>$$a_t = \mu (s_t)$$</p>
+<p>The action is directly determined by the policy&rsquo;s output, which can be a computable function based on a set of parameters, such as the weights and biases of a neural network.</p>
+<p>A <strong>stochastic policy</strong> selects actions probabilistically:</p>
+<p>$$a_t \sim \pi( \cdot \mid s_t)$$</p>
+<p>The policy outputs a probability distribution over actions for a given state, and the agent samples an action based on this distribution. Stochastic policies are often used when exploring different actions or dealing with uncertainty.</p>
+<p>In deep RL, parameterized policies are commonly used, where the outputs are computable functions that depend on a set of parameters. These policies can be represented by neural networks, allowing for flexible and expressive policy representations.</p>
+<h2 id="trajectories">Trajectories<a hidden class="anchor" aria-hidden="true" href="#trajectories">#</a></h2>
+<p>A trajectory, also known as an episode or rollout, is a sequence of states and actions experienced by an agent in the environment. It captures the agent&rsquo;s interactions with the environment over a specific period. A trajectory can be represented as follows:</p>
+<p>$$\tau = (s_0, a_0, s_1, a_1, &hellip;)$$</p>
+<p>The very first state of the trajectory, <strong><code>s₀</code></strong>, is randomly sampled from the start-state distribution, denoted as <strong><code>S₀ ~ ρ₀(·)</code></strong>. The state transitions in an environment can be either deterministic or stochastic.</p>
+<p>In deterministic state transitions, the next state, <strong><code>sₜ₊₁</code></strong>, is solely determined by the current state and action:</p>
+<p>$$s_{t+1} = f(s_t, a_t)$$</p>
+<p>In stochastic state transitions, the next state, <strong><code>sₜ₊₁</code></strong>, is sampled from a transition probability distribution:</p>
+<p>$$s_{t+1} \sim P(\cdot|s_t, a_t)$$</p>
+<h2 id="rewards-and-return">Rewards and Return<a hidden class="anchor" aria-hidden="true" href="#rewards-and-return">#</a></h2>
+<p>The reward function plays a crucial role in RL. It quantifies the immediate desirability or quality of a particular state-action-state transition. The reward function depends on the current state, the action taken, and the next state:</p>
+<p>The agent&rsquo;s goal is to maximize the cumulative reward over a trajectory, denoted as <strong><code>R(τ)</code></strong>. There are different types of returns in RL:</p>
+<p><strong>Finite-horizon undiscounted return</strong> represents the sum of rewards obtained within a fixed window of steps:</p>
+<p>$$R(\tau) = \sum^T_{t=0}r_t$$</p>
+<p><strong>Infinite-horizon discounted return</strong> represents the sum of all rewards obtained by the agent, but discounted based on how far they are obtained in the future:</p>
+<p>$$R(\tau) = \sum^\infty_{t=0} \gamma^tr_t$$</p>
+<p>where $\gamma \in (0, 1)$</p>
+<h2 id="the-rl-problem">The RL Problem<a hidden class="anchor" aria-hidden="true" href="#the-rl-problem">#</a></h2>
+<p>The primary objective in RL is to find a policy that maximizes the expected return when the agent acts according to it. Suppose the environment transitions and the policy are stochastic. In that case, the probability of a T-step trajectory can be expressed as:</p>
+<p>$$
+P(\tau | \pi) = \rho_0(s_0) \prod^{T - 1}_{t=0} P(s_{t+1}|s_t, a_t) \pi (a_t|s_t)
+$$</p>
+<p>The expected return, or objective function, can be defined as:</p>
+<p>$$
+J(\pi) = \int_\tau P(\tau | \pi)R(\tau) = E_{\tau \sim \pi}[R(\tau)]
+$$</p>
+<p>The central optimization problem in RL is to find the optimal policy, denoted as <strong><code>π*</code></strong>:</p>
+<p>$$
+\pi^*=\arg \max_\pi J(\pi)
+$$</p>
+<h2 id="value-functions">Value Functions<a hidden class="anchor" aria-hidden="true" href="#value-functions">#</a></h2>
+<p>Value functions provide estimates of the expected return associated with states or state-action pairs. There are four main types of value functions:</p>
+<p>The <strong>on-policy value function, <code>Vπ(s)</code>,</strong> estimates the expected return if we start in state <em>s</em> and always act according to policy <em>π</em>:</p>
+<p>$$V^\pi(s) = E_{\tau \sim \pi} [R(\tau)|s_0 = s]$$</p>
+<p>The <strong>on-policy action-value function</strong> <strong><code>Qπ(s, a)</code></strong> estimates the expected return if we start in state <em>s</em>, take action <em>a</em>, and then forever act according to policy <em>π</em>:</p>
+<p>$$Q^\pi(s,a) = E_{\tau \sim \pi}[R(\tau)|s_0=s, a_0=a]$$</p>
+<p>The <strong>optimal value function</strong> <strong><code>V*(s)</code></strong> estimates the expected return if we start in state <em>s</em> and always act according to the <em>optimal</em> policy:</p>
+<p>$$V^\pi(s) = \max_\pi E_{\tau \sim \pi} [R(\tau)|s_0 = s]$$</p>
+<p>The <strong>optimal action-value function</strong> <strong><code>Q*(s, a)</code></strong> estimates the expected return if we start in state <em>s</em>, take action <em>a</em>, and then forever act according to the <em>optimal</em> policy:</p>
+<p>$$Q^\pi(s,a) = \max_\pi E_{\tau \sim \pi}[R(\tau)|s_0=s, a_0=a]$$</p>
+<h2 id="bellman-equations">Bellman Equations<a hidden class="anchor" aria-hidden="true" href="#bellman-equations">#</a></h2>
+<p>All four value functions above satisfy self-consistency equations known as the Bellman equations. These equations describe the relationship between the value of a state or state-action pair and the value of subsequent states.</p>
+<p>The Bellman equations for on-policy value functions are:</p>
+<p>$$V^\pi(s)=E_{a \sim \pi, s&rsquo; \sim P}[r(s,a)+ \gamma V^\pi(s&rsquo;)],$$</p>
+<p>$$Q^\pi(s,a)=E_{s&rsquo; \sim P}[r(s,a)+ \gamma E_{a&rsquo; \sim \pi}[Q^\pi(s&rsquo;, a&rsquo;)]$$</p>
+<p>The Bellman equations for optimal value functions are:</p>
+<p>$$V^*(s)=\max_a E_{s&rsquo; \sim P} [r(s,a)+\gamma V^*(s&rsquo;)],$$</p>
+<p>$$Q^*(s,a)= E_{s&rsquo; \sim P} [r(s,a)+\gamma \max_a&rsquo; Q^*(s&rsquo;, a&rsquo;)]$$</p>
+<p>The crucial difference between the Bellman equations for on-policy value functions and optimal value functions is the absence or presence of the maximization over actions. The inclusion of this maximization reflects the fact that the agent must select the action that leads to the highest value in order to act optimally.</p>
+<h2 id="advantage-functions">Advantage Functions<a hidden class="anchor" aria-hidden="true" href="#advantage-functions">#</a></h2>
+<p>In RL, there are situations where we are interested in understanding not just how good an action is in absolute terms but how much better it is compared to other available actions on average. The <strong>advantage function</strong> captures the relative advantage of taking a specified action in a state compared to randomly selecting an action. It can be defined as:</p>
+<p>$$A^\pi(s,a)=Q^\pi(s,a)-V^\pi(s)$$</p>
+<p>The advantage function provides insights into the superiority of a specific action in a given state, considering the current policy&rsquo;s performance.</p>
+<h2 id="reference">Reference:<a hidden class="anchor" aria-hidden="true" href="#reference">#</a></h2>
+<p>[1] OpenAI Spinning Up. <a href="https://spinningup.openai.com/en/latest/spinningup/rl_intro.html">https://spinningup.openai.com/en/latest/spinningup/rl_intro.html</a></p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="http://example.org/">The Outlier</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

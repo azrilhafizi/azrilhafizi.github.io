@@ -1,0 +1,28 @@
+baseURL: http://example.org/
+languageCode: en-us
+title: The Outlier
+theme: PaperMod
+enableRobotsTXT: true
+params:
+  math: true
+  ShowReadingTime: true
+  defaultTheme: dark
+  homeInfoParams:
+    Title: "Hello there \U0001F44B"
+    Content: >-
+      Welcome to my blog. 
+assets:
+  favicon16x16: /assets/favicon-16x16.png
+  favicon32x32: /assets/favicon-32x32.png
+  apple_touch_icon: /assets/apple-touch-icon.png
+favicon: favicon.ico
+menu:
+  main:
+  - identifier: home
+    name: Home
+    url: /
+    weight: 10
+  - identifier: posts
+    name: Blog
+    url: /posts/
+    weight: 20

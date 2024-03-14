@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Posts on The Outlier</title>
+    <link>http://example.org/posts/</link>
+    <description>Recent content in Posts on The Outlier</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 12 Mar 2024 12:55:08 +0800</lastBuildDate>
+    <atom:link href="http://example.org/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Key Concepts In (Deep) Reinforcement Learning</title>
+      <link>http://example.org/posts/key-concepts-rl/</link>
+      <pubDate>Tue, 12 Mar 2024 12:55:08 +0800</pubDate>
+      <guid>http://example.org/posts/key-concepts-rl/</guid>
+      <description>Reinforcement Learning (RL) revolves around the interactions between an agent and its environment. The environment represents the world where the agent lives and takes action. At each step, the agent observes some information about the environment, makes decisions, and affects the environment through its actions.
+The agent also receives rewards from the environment, which indicate how well it is doing. The agent&amp;rsquo;s ultimate goal is to maximize the total rewards it receives, called return.</description>
+    </item>
+  </channel>
+</rss>
