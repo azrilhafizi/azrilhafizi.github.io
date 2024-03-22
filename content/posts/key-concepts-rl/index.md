@@ -2,6 +2,8 @@
 title: "Key Concepts In (Deep) Reinforcement Learning"
 date: 2024-03-12T12:55:08+08:00
 draft: false
+tags: ['reinforcement-learning']
+math: mathjax
 ---
 
 Reinforcement Learning (RL) revolves around the interactions between an agent and its environment. The environment represents the world where the agent lives and takes action. At each step, the agent observes some information about the environment, makes decisions, and affects the environment through its actions.

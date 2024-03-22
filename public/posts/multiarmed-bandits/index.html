@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Multi-Armed Bandit Problem and Its Solutions | The Outlier</title>
+<meta name="keywords" content="reinforcement-learning">
+<meta name="description" content="In probability theory and decision-making under uncertainty, the multi-armed bandit problem presents a challenge where a limited set of resources must be wisely allocated among competing choices to maximize the expected gain. This is a classic reinforcement learning problem that perfectly embodies the exploration vs exploitation dilemma.
+Imagine we are facing a row of slot machines (also called one-armed bandits). We must make a series of decisions: which arms to play, how many times to play each arm, the order in which to play them, and whether to stick with the current arm or switch to another one.">
+<meta name="author" content="">
+<link rel="canonical" href="http://example.org/posts/multiarmed-bandits/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.4599eadb9eb2ad3d0a8d6827b41a8fda8f2f4af226b63466c09c5fddbc8706b7.css" integrity="sha256-RZnq256yrT0KjWgntBqP2o8vSvImtjRmwJxf3byHBrc=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://example.org/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://example.org/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://example.org/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://example.org/apple-touch-icon.png">
+<link rel="mask-icon" href="http://example.org/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript>
+  <script type="text/javascript">
+    MathJax = {
+      tex: {
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+      },
+    };
+  </script>
+  <script
+      async
+      id="MathJax-script"
+      src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js"
+      integrity="sha384-+BSz3oj3ILMYvOBr16U9i0H4RZRmGyQQ+1q9eqr8T3skmAFrJk8GmgwgqlCZdNSo"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+      type="text/javascript"></script>
+<meta property="og:title" content="Multi-Armed Bandit Problem and Its Solutions" />
+<meta property="og:description" content="In probability theory and decision-making under uncertainty, the multi-armed bandit problem presents a challenge where a limited set of resources must be wisely allocated among competing choices to maximize the expected gain. This is a classic reinforcement learning problem that perfectly embodies the exploration vs exploitation dilemma.
+Imagine we are facing a row of slot machines (also called one-armed bandits). We must make a series of decisions: which arms to play, how many times to play each arm, the order in which to play them, and whether to stick with the current arm or switch to another one." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://example.org/posts/multiarmed-bandits/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-03-22T11:34:24+08:00" />
+<meta property="article:modified_time" content="2024-03-22T11:34:24+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Multi-Armed Bandit Problem and Its Solutions"/>
+<meta name="twitter:description" content="In probability theory and decision-making under uncertainty, the multi-armed bandit problem presents a challenge where a limited set of resources must be wisely allocated among competing choices to maximize the expected gain. This is a classic reinforcement learning problem that perfectly embodies the exploration vs exploitation dilemma.
+Imagine we are facing a row of slot machines (also called one-armed bandits). We must make a series of decisions: which arms to play, how many times to play each arm, the order in which to play them, and whether to stick with the current arm or switch to another one."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "http://example.org/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Multi-Armed Bandit Problem and Its Solutions",
+      "item": "http://example.org/posts/multiarmed-bandits/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Multi-Armed Bandit Problem and Its Solutions",
+  "name": "Multi-Armed Bandit Problem and Its Solutions",
+  "description": "In probability theory and decision-making under uncertainty, the multi-armed bandit problem presents a challenge where a limited set of resources must be wisely allocated among competing choices to maximize the expected gain. This is a classic reinforcement learning problem that perfectly embodies the exploration vs exploitation dilemma.\nImagine we are facing a row of slot machines (also called one-armed bandits). We must make a series of decisions: which arms to play, how many times to play each arm, the order in which to play them, and whether to stick with the current arm or switch to another one.",
+  "keywords": [
+    "reinforcement-learning"
+  ],
+  "articleBody": "In probability theory and decision-making under uncertainty, the multi-armed bandit problem presents a challenge where a limited set of resources must be wisely allocated among competing choices to maximize the expected gain. This is a classic reinforcement learning problem that perfectly embodies the exploration vs exploitation dilemma.\nImagine we are facing a row of slot machines (also called one-armed bandits). We must make a series of decisions: which arms to play, how many times to play each arm, the order in which to play them, and whether to stick with the current arm or switch to another one. In this setup, each arm provides a random reward from an unknown probability distribution. Our primary objective is to maximize the total reward obtained over a series of plays.\nAs we do not know the probability distributions, a straightforward strategy is to simply select the arm given a uniform distribution; that is, select each arm with the same probability. Over time, we will eventually manage to estimate the true reward probability according to the law of large numbers. But here’s the catch: we need to spend enormous time trying out every action. Why not we only focus on the most promising actions given the reward we received so far?\nExploration vs Exploitation We want to play only the good actions; so just keep playing the actions that have given us the best reward so far. However, at first, we do not have information to tell us what the best actions are. We need strategies that exploit what we think are the best actions so far, but still explore other actions.\nNow, the big question is: how much should we exploit and how much should we explore? This is known as the exploration vs exploitation dilemma. It’s tricky because we don’t have all the information we need. We want to gather enough data to make smart decisions overall while keeping the risks in check. Exploitation means using what we know works best, while exploration involves taking some risks to learn about actions we’re not familiar with.\nIn the context of the multi-armed bandit problem, we want exploration strategies that minimize the regret, which is the expected loss from not taking the best action. A zero-regret strategy is a strategy where the average regret of each round approaches zero as the number of rounds approaches infinity. This means, a zero-regret strategy will converge to an optimal strategy given enough rounds.\nBernoulli Bandit We are going to implement several exploration strategies for the simplest multi-armed bandit problem: Bernoulli Bandit. The bandit has $K$ actions. The action produces a reward, $r=1$, with probability $0 \\le \\theta_k \\le 1$, which is unknown to the agent, but fixed over time. The objective of the agent is to minimize regret over a fixed number of action selections, $T$.\n$$ \\rho = T \\theta^* - \\sum_{t=1}^T \\theta_{\\alpha_t} $$\nwhere $\\theta^* = \\max_k{\\theta_k}$ and $\\theta_{\\alpha_t}$ corresponds to the chosen action $\\alpha_t$ at each step.\nclass BernoulliBandit: def __init__(self, n_actions=5): self._probs = np.random.random(n_actions) @property def action_count(self): return len(self._probs) def pull(self, action): if np.any(np.random.random() \u003e self._probs[action]): return 0.0 return 1.0 def optimal_reward(self): \"\"\" Used for regret calculation \"\"\" return np.max(self._probs) def action_value(self, action): \"\"\" Used for regret calculation \"\"\" return self._probs[action] The implementation for each strategy that will be discuss inherits from the AbstractAgent class:\nclass AbstractAgent(metaclass=ABCMeta): def init_actions(self, n_actions): self._successes = np.zeros(n_actions) self._failures = np.zeros(n_actions) self._total_pulls = 0 @abstractmethod def get_action(self): \"\"\" Get current best action :rtype: int \"\"\" pass def update(self, action, reward): \"\"\" Observe reward from action and update agent's internal parameters :type action: int :type reward: int \"\"\" self._total_pulls += 1 if reward == 1: self._successes[action] += 1 else: self._failures[action] += 1 @property def name(self): return self.__class__.__name__ Epsilon-greedy The epsilon-greedy strategy is a simple and effective way to balance exploration and exploitation. The parameter $\\epsilon \\in [0,1]$ controls how much the agent explores and how much will it exploit.\nAccording to this strategy, with a small probability $\\epsilon$, the agent takes a random action, but most of the time, with probability $1 - \\epsilon$, the agent will pick the best action learned so far. The best $\\epsilon$ value depends on the particular problem, but typically, values around 0.05 to 0.1 work very well.\nclass EpsilonGreedyAgent(AbstractAgent): def __init__(self, epsilon=0.01): self._epsilon = epsilon def get_action(self): if np.random.random() \u003c self._epsilon: return np.random.randint(len(self._successes)) else: return np.argmax(self._successes / (self._successes + self._failures + 0.1)) The following plot shows the regret for each step, averaged over 10 trials.\nHigher values of epsilon tend to have a higher regret over time. Higher value means more exploration, so the agent spends more time exploring less valuable actions, even though it already has a good estimate of the value of actions. In this particular problem, the epsilon value of 0.05 to 0.1 is a reasonable choice.\\\nUpper Confidence Bound The epsilon-greedy strategy has no preference for actions and is inefficient in exploration. The agent might explore a bad action which is already been confirmed as a bad action in the past. It would be better to select among actions that are uncertain or have the potential to be optimal. One can come up with an idea of index for each action that represents optimality and uncertainty at the same time. One efficient way to do it is to use the UCB1 algorithm.\nIn each iteration, the agent assesses each available action’s potential by calculating a weight ($w_k$) that combines estimates of both optimality and uncertainty.\n$$ w_k = \\underbrace{\\alpha_k \\over \\alpha_k + \\beta_k}_\\text{optimality} + \\underbrace{\\sqrt{2 \\log t \\over \\alpha_k + \\beta_k}}_\\text{uncertainty} $$\nThe first term ${\\alpha_k \\over \\alpha_k + \\beta_k}$ represents the estimated success probability (optimality). The second term $\\sqrt{2 \\log t \\over \\alpha_k + \\beta_k}$ represents the uncertainty, encouraging exploration.\nAfter calculating weights for all actions, the agent then will choose with the maximum weight.\nclass UCBAgent(AbstractAgent): def get_action(self): pulls = self._successes + self._failures + 0.1 return np.argmax(self._successes / pulls + np.sqrt(2 * np.log(self._total_pulls + 0.1) / pulls)) In a static environment, epsilon-greedy might outperform UCB1 initially because epsilon-greedy is straightforward and tends to quickly focus on the arm with the highest estimated mean reward. UCB1, in contrast, might spend more time exploring and being cautious due to its confidence bounds.\nBut, in many real problems, the underlying probability distributions are not static. For example, suppose we employ a recommendation system for streaming content, using multi-armed bandit approach to decide which shows to suggest to users. In this scenario, the reward is measured by user engagement, specifically whether they watch the suggested show. The viewing preferences of our audience may evolve over time, influenced by factors such as trending genres, seasonal changes, and more.\nHere is an example of a nonstationary bandit where the reward probabilities change over time.\nclass DriftingBandit(BernoulliBandit): def __init__(self, n_actions=5, gamma=0.01): super().__init__(n_actions) self._gamma = gamma self._successes = None self._failures = None self._steps = 0 self.reset() def reset(self): self._successes = np.zeros(self.action_count) + 1.0 self._failures = np.zeros(self.action_count) + 1.0 self._steps = 0 def step(self): action = np.random.randint(self.action_count) reward = self.pull(action) self._step(action, reward) def _step(self, action, reward): self._successes = self._successes * (1 - self._gamma) + self._gamma self._failures = self._failures * (1 - self._gamma) + self._gamma self._steps += 1 self._successes[action] += reward self._failures[action] += 1.0 - reward self._probs = np.random.beta(self._successes, self._failures) UCB1 shines in a changing environment because of its ability to adapt. As the distribution of rewards changes over time, UCB1 continues to explore arms with uncertain estimates, preventing it from getting stuck on a suboptimal arm.\nThompson Sampling Unlike the UCB1 algorithm, Thompson Sampling incorporates the actual distribution of rewards by sampling from a Beta distribution for each action. The Beta distribution is a flexible choice, as it is defined on the interval $[0, 1]$, making it suitable for representing probabilities.\nIn each iteration, the algorithm samples from a Beta distribution for each available action. These samples provide estimates of the true success probability for each action. The algorithm then selects the action with the highest sampled value. This approach allows Thompson Sampling to adapt to the true underlying distribution of rewards and make more informed decisions over time.\nclass ThompsonSamplingAgent(AbstractAgent): def get_action(self): return np.argmax(np.random.beta(self._successes + 1, self._failures + 1)) From these comparison plots, we can see that Thompson Sampling performs really well compared to epsilon-greedy and UCB1. In a static environment, the algorithm continuously refines its probability distributions based on observed outcomes. As it converges to the true underlying distribution, the algorithm becomes adept at exploiting the arm with the highest expected reward. In a dynamic environment, its ability to update beliefs in a Bayesian manner allows it to swiftly adapt to changes in the reward distribution.\n",
+  "wordCount" : "1432",
+  "inLanguage": "en",
+  "datePublished": "2024-03-22T11:34:24+08:00",
+  "dateModified": "2024-03-22T11:34:24+08:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://example.org/posts/multiarmed-bandits/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "The Outlier",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://example.org/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class=" dark" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://example.org/" accesskey="h" title="The Outlier (Alt + H)">The Outlier</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://example.org/" title="Home">
+                    <span>Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://example.org/posts/" title="Blog">
+                    <span>Blog</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://example.org/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Multi-Armed Bandit Problem and Its Solutions
+    </h1>
+    <div class="post-meta"><span title='2024-03-22 11:34:24 +0800 +08'>March 22, 2024</span>&nbsp;·&nbsp;7 min
+
+</div>
+  </header> 
+  <div class="post-content"><p>In probability theory and decision-making under uncertainty, the multi-armed bandit problem presents a challenge where a limited set of resources must be wisely allocated among competing choices to maximize the expected gain. This is a classic reinforcement learning problem that perfectly embodies the <em>exploration vs exploitation dilemma</em>.</p>
+<p>Imagine we are facing a row of slot machines (also called <a href="https://en.wiktionary.org/wiki/one-armed_bandit">one-armed bandits</a>). We must make a series of decisions: which arms to play, how many times to play each arm, the order in which to play them, and whether to stick with the current arm or switch to another one. In this setup, each arm provides a random reward from an unknown probability distribution. Our primary objective is to maximize the total reward obtained over a series of plays.</p>
+<p>As we do not know the probability distributions, a straightforward strategy is to simply select the arm given a uniform distribution; that is, select each arm with the same probability. Over time, we will eventually manage to estimate the true reward probability according to the <a href="https://en.wikipedia.org/wiki/Law_of_large_numbers">law of large numbers</a>. But here&rsquo;s the catch: we need to spend enormous time trying out every action. Why not we only focus on the most promising actions given the reward we received so far?</p>
+<h2 id="exploration-vs-exploitation">Exploration vs Exploitation<a hidden class="anchor" aria-hidden="true" href="#exploration-vs-exploitation">#</a></h2>
+<p>We want to play only the good actions; so just keep playing the actions that have given us the best reward so far. However, at first, we do not have information to tell us what the best actions are. We need strategies that <em>exploit</em> what we think are the best actions so far, but still <em>explore</em> other actions.</p>
+<p>Now, the big question is: how much should we exploit and how much should we explore? This is known as the exploration vs exploitation dilemma. It&rsquo;s tricky because we don&rsquo;t have all the information we need. We want to gather enough data to make smart decisions overall while keeping the risks in check. Exploitation means using what we know works best, while exploration involves taking some risks to learn about actions we&rsquo;re not familiar with.</p>
+<p>In the context of the multi-armed bandit problem, we want exploration strategies that minimize the regret, which is the expected loss from not taking the best action. A zero-regret strategy is a strategy where the average regret of each round approaches zero as the number of rounds approaches infinity. This means, a zero-regret strategy will converge to an optimal strategy given enough rounds.</p>
+<h2 id="bernoulli-bandit">Bernoulli Bandit<a hidden class="anchor" aria-hidden="true" href="#bernoulli-bandit">#</a></h2>
+<p>We are going to implement several exploration strategies for the simplest multi-armed bandit problem: Bernoulli Bandit. The bandit has $K$ actions. The action produces a reward, $r=1$, with probability $0 \le \theta_k \le 1$, which is unknown to the agent, but fixed over time. The objective of the agent is to minimize regret over a fixed number of action selections, $T$.</p>
+<p>$$
+\rho = T \theta^* - \sum_{t=1}^T \theta_{\alpha_t}
+$$</p>
+<p>where $\theta^* = \max_k{\theta_k}$ and $\theta_{\alpha_t}$ corresponds to the chosen action $\alpha_t$ at each step.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">BernoulliBandit</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> __init__(self, n_actions<span style="color:#f92672">=</span><span style="color:#ae81ff">5</span>):
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>_probs <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>random(n_actions)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@property</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">action_count</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> len(self<span style="color:#f92672">.</span>_probs)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">pull</span>(self, action):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> np<span style="color:#f92672">.</span>any(np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>random() <span style="color:#f92672">&gt;</span> self<span style="color:#f92672">.</span>_probs[action]):
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0.0</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1.0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">optimal_reward</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Used for regret calculation
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> np<span style="color:#f92672">.</span>max(self<span style="color:#f92672">.</span>_probs)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">action_value</span>(self, action):
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Used for regret calculation
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>_probs[action]
+</span></span></code></pre></div><p>The implementation for each strategy that will be discuss inherits from the <code>AbstractAgent</code> class:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AbstractAgent</span>(metaclass<span style="color:#f92672">=</span>ABCMeta):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">init_actions</span>(self, n_actions):
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>_successes <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>zeros(n_actions)
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>_failures <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>zeros(n_actions)
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>_total_pulls <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@abstractmethod</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_action</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Get current best action
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        :rtype: int
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">pass</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">update</span>(self, action, reward):
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Observe reward from action and update agent&#39;s internal parameters
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        :type action: int
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        :type reward: int
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>_total_pulls <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> reward <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>:
+</span></span><span style="display:flex;"><span>            self<span style="color:#f92672">.</span>_successes[action] <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            self<span style="color:#f92672">.</span>_failures[action] <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@property</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">name</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>__class__<span style="color:#f92672">.</span>__name__
+</span></span></code></pre></div><h2 id="epsilon-greedy">Epsilon-greedy<a hidden class="anchor" aria-hidden="true" href="#epsilon-greedy">#</a></h2>
+<p>The epsilon-greedy strategy is a simple and effective way to balance exploration and exploitation. The parameter $\epsilon \in [0,1]$ controls how much the agent explores and how much will it exploit.</p>
+<p>According to this strategy, with a small probability $\epsilon$, the agent takes a random action, but most of the time, with probability $1 - \epsilon$, the agent will pick the best action learned so far. The best $\epsilon$ value depends on the particular problem, but typically, values around 0.05 to 0.1 work very well.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">EpsilonGreedyAgent</span>(AbstractAgent):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> __init__(self, epsilon<span style="color:#f92672">=</span><span style="color:#ae81ff">0.01</span>):
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>_epsilon <span style="color:#f92672">=</span> epsilon
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_action</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>random() <span style="color:#f92672">&lt;</span> self<span style="color:#f92672">.</span>_epsilon:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>randint(len(self<span style="color:#f92672">.</span>_successes))
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> np<span style="color:#f92672">.</span>argmax(self<span style="color:#f92672">.</span>_successes <span style="color:#f92672">/</span> (self<span style="color:#f92672">.</span>_successes <span style="color:#f92672">+</span> self<span style="color:#f92672">.</span>_failures <span style="color:#f92672">+</span> <span style="color:#ae81ff">0.1</span>))
+</span></span></code></pre></div><p>The following plot shows the regret for each step, averaged over 10 trials.</p>
+<p><img loading="lazy" src="img/epsilon.png" alt=""  />
+</p>
+<p>Higher values of epsilon tend to have a higher regret over time. Higher value means more exploration, so the agent spends more time exploring less valuable actions, even though it already has a good estimate of the value of actions. In this particular problem, the epsilon value of 0.05 to 0.1 is a reasonable choice.\</p>
+<h2 id="upper-confidence-bound">Upper Confidence Bound<a hidden class="anchor" aria-hidden="true" href="#upper-confidence-bound">#</a></h2>
+<p>The epsilon-greedy strategy has no preference for actions and is inefficient in exploration. The agent might explore a bad action which is already been confirmed as a bad action in the past. It would be better to select among actions that are uncertain or have the potential to be optimal. One can come up with an idea of index for each action that represents optimality and uncertainty at the same time. One efficient way to do it is to use the UCB1 algorithm.</p>
+<p>In each iteration, the agent assesses each available action&rsquo;s potential by calculating a weight ($w_k$) that combines estimates of both optimality and uncertainty.</p>
+<p>$$
+w_k = \underbrace{\alpha_k \over \alpha_k + \beta_k}_\text{optimality} + \underbrace{\sqrt{2 \log t \over \alpha_k + \beta_k}}_\text{uncertainty}
+$$</p>
+<p>The first term ${\alpha_k \over \alpha_k + \beta_k}$ represents the estimated success probability (optimality). The second term $\sqrt{2 \log t \over \alpha_k + \beta_k}$ represents the uncertainty, encouraging exploration.</p>
+<p>After calculating weights for all actions, the agent then will choose with the maximum weight.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UCBAgent</span>(AbstractAgent):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_action</span>(self):
+</span></span><span style="display:flex;"><span>        pulls <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>_successes <span style="color:#f92672">+</span> self<span style="color:#f92672">.</span>_failures <span style="color:#f92672">+</span> <span style="color:#ae81ff">0.1</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> np<span style="color:#f92672">.</span>argmax(self<span style="color:#f92672">.</span>_successes <span style="color:#f92672">/</span> pulls <span style="color:#f92672">+</span> np<span style="color:#f92672">.</span>sqrt(<span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> np<span style="color:#f92672">.</span>log(self<span style="color:#f92672">.</span>_total_pulls <span style="color:#f92672">+</span> <span style="color:#ae81ff">0.1</span>) <span style="color:#f92672">/</span> pulls))
+</span></span></code></pre></div><p>In a static environment, epsilon-greedy might outperform UCB1 initially because epsilon-greedy is straightforward and tends to quickly focus on the arm with the highest estimated mean reward. UCB1, in contrast, might spend more time exploring and being cautious due to its confidence bounds.</p>
+<p><img loading="lazy" src="img/ucbvepsilon.png" alt=""  />
+</p>
+<p>But, in many real problems, the underlying probability distributions are not static. For example, suppose we employ a recommendation system for streaming content, using multi-armed bandit approach to decide which shows to suggest to users. In this scenario, the reward is measured by user engagement, specifically whether they watch the suggested show. The viewing preferences of our audience may evolve over time, influenced by factors such as trending genres, seasonal changes, and more.</p>
+<p>Here is an example of a nonstationary bandit where the reward probabilities change over time.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DriftingBandit</span>(BernoulliBandit):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> __init__(self, n_actions<span style="color:#f92672">=</span><span style="color:#ae81ff">5</span>, gamma<span style="color:#f92672">=</span><span style="color:#ae81ff">0.01</span>):
+</span></span><span style="display:flex;"><span>        super()<span style="color:#f92672">.</span>__init__(n_actions)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>_gamma <span style="color:#f92672">=</span> gamma
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>_successes <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>_failures <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>_steps <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>reset()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">reset</span>(self):
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>_successes <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>zeros(self<span style="color:#f92672">.</span>action_count) <span style="color:#f92672">+</span> <span style="color:#ae81ff">1.0</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>_failures <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>zeros(self<span style="color:#f92672">.</span>action_count) <span style="color:#f92672">+</span> <span style="color:#ae81ff">1.0</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>_steps <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">step</span>(self):
+</span></span><span style="display:flex;"><span>        action <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>randint(self<span style="color:#f92672">.</span>action_count)
+</span></span><span style="display:flex;"><span>        reward <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>pull(action)
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>_step(action, reward)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_step</span>(self, action, reward):
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>_successes <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>_successes <span style="color:#f92672">*</span> (<span style="color:#ae81ff">1</span> <span style="color:#f92672">-</span> self<span style="color:#f92672">.</span>_gamma) <span style="color:#f92672">+</span> self<span style="color:#f92672">.</span>_gamma
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>_failures <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>_failures <span style="color:#f92672">*</span> (<span style="color:#ae81ff">1</span> <span style="color:#f92672">-</span> self<span style="color:#f92672">.</span>_gamma) <span style="color:#f92672">+</span> self<span style="color:#f92672">.</span>_gamma
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>_steps <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>_successes[action] <span style="color:#f92672">+=</span> reward
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>_failures[action] <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1.0</span> <span style="color:#f92672">-</span> reward
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>_probs <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>beta(self<span style="color:#f92672">.</span>_successes, self<span style="color:#f92672">.</span>_failures)
+</span></span></code></pre></div><p><img loading="lazy" src="img/reward.png" alt=""  />
+</p>
+<p><img loading="lazy" src="img/ucbvepsilon1.png" alt=""  />
+</p>
+<p>UCB1 shines in a changing environment because of its ability to adapt. As the distribution of rewards changes over time, UCB1 continues to explore arms with uncertain estimates, preventing it from getting stuck on a suboptimal arm.</p>
+<h2 id="thompson-sampling">Thompson Sampling<a hidden class="anchor" aria-hidden="true" href="#thompson-sampling">#</a></h2>
+<p>Unlike the UCB1 algorithm, Thompson Sampling incorporates the actual distribution of rewards by sampling from a Beta distribution for each action. The Beta distribution is a flexible choice, as it is defined on the interval $[0, 1]$, making it suitable for representing probabilities.</p>
+<p>In each iteration, the algorithm samples from a Beta distribution for each available action. These samples provide estimates of the true success probability for each action. The algorithm then selects the action with the highest sampled value. This approach allows Thompson Sampling to adapt to the true underlying distribution of rewards and make more informed decisions over time.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ThompsonSamplingAgent</span>(AbstractAgent):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_action</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> np<span style="color:#f92672">.</span>argmax(np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>beta(self<span style="color:#f92672">.</span>_successes <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>, self<span style="color:#f92672">.</span>_failures <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>))
+</span></span></code></pre></div><p><img loading="lazy" src="img/all3.png" alt=""  />
+</p>
+<p>From these comparison plots, we can see that Thompson Sampling performs really well compared to epsilon-greedy and UCB1. In a static environment, the algorithm continuously refines its probability distributions based on observed outcomes. As it converges to the true underlying distribution, the algorithm becomes adept at exploiting the arm with the highest expected reward. In a dynamic environment, its ability to update beliefs in a Bayesian manner allows it to swiftly adapt to changes in the reward distribution.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://example.org/tags/reinforcement-learning/">reinforcement-learning</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="http://example.org/">The Outlier</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

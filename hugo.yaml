@@ -4,7 +4,8 @@ title: The Outlier
 theme: PaperMod
 enableRobotsTXT: true
 params:
-  math: true
+  math: mathjax
+  ShowCodeCopyButtons: true
   ShowReadingTime: true
   defaultTheme: dark
   homeInfoParams:
@@ -26,3 +27,7 @@ menu:
     name: Blog
     url: /posts/
     weight: 20
+  - identifier: tags
+    name: Tags
+    url: /tags/
+    weight: 30

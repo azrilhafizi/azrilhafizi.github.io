@@ -6,8 +6,16 @@
     <description>Recent content in Posts on The Outlier</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 12 Mar 2024 12:55:08 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 22 Mar 2024 11:34:24 +0800</lastBuildDate>
     <atom:link href="http://example.org/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Multi-Armed Bandit Problem and Its Solutions</title>
+      <link>http://example.org/posts/multiarmed-bandits/</link>
+      <pubDate>Fri, 22 Mar 2024 11:34:24 +0800</pubDate>
+      <guid>http://example.org/posts/multiarmed-bandits/</guid>
+      <description>In probability theory and decision-making under uncertainty, the multi-armed bandit problem presents a challenge where a limited set of resources must be wisely allocated among competing choices to maximize the expected gain. This is a classic reinforcement learning problem that perfectly embodies the exploration vs exploitation dilemma.
+Imagine we are facing a row of slot machines (also called one-armed bandits). We must make a series of decisions: which arms to play, how many times to play each arm, the order in which to play them, and whether to stick with the current arm or switch to another one.</description>
+    </item>
     <item>
       <title>Key Concepts In (Deep) Reinforcement Learning</title>
       <link>http://example.org/posts/key-concepts-rl/</link>
