@@ -6,8 +6,15 @@
     <description>Recent content in Tags on The Outlier</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 22 Mar 2024 11:34:24 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 18 Apr 2024 15:53:52 +0800</lastBuildDate>
     <atom:link href="http://example.org/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>safety</title>
+      <link>http://example.org/tags/safety/</link>
+      <pubDate>Thu, 18 Apr 2024 15:53:52 +0800</pubDate>
+      <guid>http://example.org/tags/safety/</guid>
+      <description></description>
+    </item>
     <item>
       <title>reinforcement-learning</title>
       <link>http://example.org/tags/reinforcement-learning/</link>

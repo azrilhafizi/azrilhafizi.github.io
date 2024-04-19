@@ -6,8 +6,16 @@
     <description>Recent content in Posts on The Outlier</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 22 Mar 2024 11:34:24 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 18 Apr 2024 15:53:52 +0800</lastBuildDate>
     <atom:link href="http://example.org/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Reflections on the Intro to ML Safety Course</title>
+      <link>http://example.org/posts/ml-safety-intro/</link>
+      <pubDate>Thu, 18 Apr 2024 15:53:52 +0800</pubDate>
+      <guid>http://example.org/posts/ml-safety-intro/</guid>
+      <description>As ML systems expand in size and capabilities, it&amp;rsquo;s crucial to prioritize safety research. Like any powerful technology, the responsible development and deployment of ML systems require a thorough understanding of potential risks and a dedication to mitigating them. In this blog post, I&amp;rsquo;ll share what I&amp;rsquo;ve learned from the Introduction to ML Safety course offered by the Center for AI Safety.
+There are four main research areas to mitigate existential risks (X-Risks) from strong AI.</description>
+    </item>
     <item>
       <title>Multi-Armed Bandit Problem and Its Solutions</title>
       <link>http://example.org/posts/multiarmed-bandits/</link>

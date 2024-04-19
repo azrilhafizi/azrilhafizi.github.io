@@ -2,32 +2,62 @@ baseURL: http://example.org/
 languageCode: en-us
 title: The Outlier
 theme: PaperMod
+
 enableRobotsTXT: true
+buildDrafts: true
+buildFuture: false
+buildExpired: false
+
 params:
+  env: production
+  title: The Outlier
+  description: 'Technical blog posts on AI safety and mechanistic interpretability'
+  keywords: [Blog, Portfolio, PaperMod, Machine Learning]
   math: mathjax
   ShowCodeCopyButtons: true
   ShowReadingTime: true
   defaultTheme: dark
   homeInfoParams:
-    Title: "Hello there \U0001F44B"
+    Title: "Welcome \U0001F44B"
     Content: >-
-      Welcome to my blog. 
-assets:
-  favicon16x16: /assets/favicon-16x16.png
-  favicon32x32: /assets/favicon-32x32.png
-  apple_touch_icon: /assets/apple-touch-icon.png
-favicon: favicon.ico
+      Hi, this is Azril. I’m documenting my learning notes here. Sometimes I also write longer technical blog posts. My interest lies in AI Safety. Currently focusing on mechanistic interpretability. 
+  assets:
+    favicon: '/assets/favicon.ico'
+    favicon16x16: '/assets/favicon-16x16.png'
+    favicon32x32: '/assets/favicon-32x32.png'
+    apple_touch_icon: '/assets/apple-touch-icon.png'
+  socialIcons:
+    - name: github
+      url: https://github.com/azrilhafizi/
+    - name: kofi
+      url: https://ko-fi.com/azrilhafizi
+  fuseOpts:
+    isCaseSensitive: false
+    shouldSort: true
+    location: 0
+    distance: 1000
+    threshold: 0.25
+    minMatchCharLength: 0
+    limit: 10 # refer: https://www.fusejs.io/api/methods.html#search
+    keys: ["title", "permalink", "summary", "content"]
+
 menu:
   main:
-  - identifier: home
-    name: Home
+  - identifier: posts
+    name: Posts
     url: /
     weight: 10
-  - identifier: posts
-    name: Blog
-    url: /posts/
+  - identifier: notes
+    name: Learning Notes
+    url: /notes
     weight: 20
-  - identifier: tags
-    name: Tags
-    url: /tags/
+  - identifier: search
+    name: Search
+    url: /search/
     weight: 30
+
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON

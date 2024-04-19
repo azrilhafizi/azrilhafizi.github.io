@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>safety on The Outlier</title>
+    <link>http://example.org/tags/safety/</link>
+    <description>Recent content in safety on The Outlier</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 18 Apr 2024 15:53:52 +0800</lastBuildDate>
+    <atom:link href="http://example.org/tags/safety/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Reflections on the Intro to ML Safety Course</title>
+      <link>http://example.org/posts/ml-safety-intro/</link>
+      <pubDate>Thu, 18 Apr 2024 15:53:52 +0800</pubDate>
+      <guid>http://example.org/posts/ml-safety-intro/</guid>
+      <description>As ML systems expand in size and capabilities, it&amp;rsquo;s crucial to prioritize safety research. Like any powerful technology, the responsible development and deployment of ML systems require a thorough understanding of potential risks and a dedication to mitigating them. In this blog post, I&amp;rsquo;ll share what I&amp;rsquo;ve learned from the Introduction to ML Safety course offered by the Center for AI Safety.
+There are four main research areas to mitigate existential risks (X-Risks) from strong AI.</description>
+    </item>
+  </channel>
+</rss>

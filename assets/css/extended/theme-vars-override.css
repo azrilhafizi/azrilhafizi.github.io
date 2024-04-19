@@ -1,0 +1,33 @@
+:root {
+    --theme: #fafafa;
+    --entry: #f0f0f0;
+    --primary: #333333; 
+    --secondary: #666666; 
+    --tertiary: #999999; 
+    --content: #333333; 
+    --hljs-bg: #f5f5f5; 
+    --code-bg: #ffffff; 
+    --border: #cccccc; 
+}
+
+.dark {
+    --theme: #333333;
+    --entry: #2b2b2b;
+    --primary: #ffffff;
+    --secondary: #cccccc;
+    --tertiary: #999999;
+    --content: #ffffff;
+    --hljs-bg: #1a1a1a;
+    --code-bg: #2b2b2b;
+    --border: #555555;
+}
+
+.divider {
+    height: 55px; 
+    background-image: repeating-linear-gradient(-45deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0) 8px, var(--border) 10px, var(--border) 12px); 
+    border-width: 0px;
+    border-style: initial;
+    border-color: initial;
+    color: inherit;
+    margin: 20px 0; 
+}

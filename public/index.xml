@@ -6,8 +6,27 @@
     <description>Recent content on The Outlier</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 22 Mar 2024 11:34:24 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 18 Apr 2024 15:53:52 +0800</lastBuildDate>
     <atom:link href="http://example.org/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Reflections on the Intro to ML Safety Course</title>
+      <link>http://example.org/posts/ml-safety-intro/</link>
+      <pubDate>Thu, 18 Apr 2024 15:53:52 +0800</pubDate>
+      <guid>http://example.org/posts/ml-safety-intro/</guid>
+      <description>As ML systems expand in size and capabilities, it&amp;rsquo;s crucial to prioritize safety research. Like any powerful technology, the responsible development and deployment of ML systems require a thorough understanding of potential risks and a dedication to mitigating them. In this blog post, I&amp;rsquo;ll share what I&amp;rsquo;ve learned from the Introduction to ML Safety course offered by the Center for AI Safety.
+There are four main research areas to mitigate existential risks (X-Risks) from strong AI.</description>
+    </item>
+    <item>
+      <title>Einsum</title>
+      <link>http://example.org/notes/einsum/</link>
+      <pubDate>Thu, 18 Apr 2024 00:00:00 +0000</pubDate>
+      <guid>http://example.org/notes/einsum/</guid>
+      <description>signature einsum(equation, operand) where equation is a string representing the Einstein summation and operands is a sequence of tensors.
+how its work? free indices: indices specified in output summation indices: all other indices in input not in output example: np.einsum(&amp;quot;ik, kj -&amp;gt; ij&amp;quot;, A, B), free indices = i, j and summation index = k examples import torch
+x = torch.rand((2, 3))
+permutation torch.einsum(&amp;quot;ij -&amp;gt; ji&amp;quot;, x)
+summation torch.einsum(&amp;quot;ij -&amp;gt;&amp;quot;, x)</description>
+    </item>
     <item>
       <title>Multi-Armed Bandit Problem and Its Solutions</title>
       <link>http://example.org/posts/multiarmed-bandits/</link>
