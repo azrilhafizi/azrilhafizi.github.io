@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+
 :root {
     --theme: #fafafa;
     --entry: #f0f0f0;
@@ -8,6 +11,8 @@
     --hljs-bg: #f5f5f5; 
     --code-bg: #ffffff; 
     --border: #cccccc; 
+    --header-font: 'Space Grotesk', 'sans-serif'; 
+    --body-font: 'Inter', 'sans-serif'; 
 }
 
 .dark {
@@ -20,6 +25,14 @@
     --hljs-bg: #1a1a1a;
     --code-bg: #2b2b2b;
     --border: #555555;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--header-font);
+}
+
+body {
+    font-family: var(--body-font);
 }
 
 .divider {
